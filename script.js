@@ -1,213 +1,98 @@
-const api = {
-  async request(url, options = {}) {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    };
-
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    const response = await fetch(url, { ...options, headers });
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Có lỗi xảy ra');
-    }
-
-    return data;
-  },
-  signup(payload) {
-    return this.request('/api/auth/signup', { method: 'POST', body: JSON.stringify(payload) });
-  },
-  signin(payload) {
-    return this.request('/api/auth/signin', { method: 'POST', body: JSON.stringify(payload) });
-  },
-  getPosts() {
-    return this.request('/api/posts');
-  },
-  getPost(postId) {
-    return this.request(`/api/posts/${postId}`);
-  },
-  getComments(postId) {
-    return this.request(`/api/posts/${postId}/comments`);
-  },
-  createPost(payload) {
-    return this.request('/api/posts', { method: 'POST', body: JSON.stringify(payload) });
-  },
-  createComment(postId, payload) {
-    return this.request(`/api/posts/${postId}/comments`, { method: 'POST', body: JSON.stringify(payload) });
-  }
-};
-
-const state = { posts: [] };
-
-const postsRoot = document.getElementById('postsRoot');
-const messageEl = document.getElementById('message');
-const userStatus = document.getElementById('userStatus');
-const authModal = document.getElementById('authModal');
-const createModal = document.getElementById('createModal');
-const postModal = document.getElementById('postModal');
-const postDetail = document.getElementById('postDetail');
-
-const openAuthBtn = document.getElementById('openAuthBtn');
-const openCreateBtn = document.getElementById('openCreateBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-
-const signupForm = document.getElementById('signupForm');
-const signinForm = document.getElementById('signinForm');
-const postForm = document.getElementById('postForm');
-
-function setMessage(message, isError = false) {
-  messageEl.style.color = isError ? '#ffb5b5' : '#9fffb8';
-  messageEl.textContent = message;
-}
-
-function getUser() {
-  return JSON.parse(localStorage.getItem('user') || 'null');
-}
-
-function updateUserStatus() {
-  const user = getUser();
-  userStatus.textContent = user ? `Xin chào, ${user.name}. Bạn có thể đăng bài và bình luận.` : 'Bạn chưa đăng nhập.';
-}
-
-function openModal(modal) {
-  modal.classList.remove('hidden');
-}
-
-function closeModal(modal) {
-  modal.classList.add('hidden');
-}
-
-async function renderPosts() {
-  postsRoot.innerHTML = 'Đang tải bài viết...';
-  const posts = await api.getPosts();
-  state.posts = posts;
-
-  if (!posts.length) {
-    postsRoot.innerHTML = '<p>Chưa có bài viết.</p>';
-    return;
-  }
-
-  postsRoot.innerHTML = posts
-    .map(
-      (post) => `
-      <article class="post-card" data-post-id="${post.id}">
-        <h3>${post.title}</h3>
-        <p>${post.excerpt}</p>
-        <p class="meta">${post.authorName} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.commentsCount} bình luận</p>
-      </article>
-    `
-    )
-    .join('');
-
-  document.querySelectorAll('.post-card').forEach((card) => {
-    card.addEventListener('click', async () => {
-      const postId = Number(card.dataset.postId);
-      await openPostPopup(postId);
-    });
-  });
-}
-
-async function openPostPopup(postId) {
-  try {
-    const [post, comments] = await Promise.all([api.getPost(postId), api.getComments(postId)]);
-
-    postDetail.innerHTML = `
-      <h2>${post.title}</h2>
-      <p class="meta">Tác giả: ${post.authorName} · ${new Date(post.createdAt).toLocaleString('vi-VN')}</p>
-      <p>${post.content}</p>
-      <h3>Bình luận</h3>
-      <div>
-        ${comments.length
-          ? comments.map((comment) => `<div class="comment-item"><b>${comment.authorName}:</b> ${comment.content}</div>`).join('')
-          : '<p class="muted">Chưa có bình luận.</p>'}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>devDA Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">devDA<span>Blog</span></div>
+      <div class="top-actions">
+        <button id="openAuthBtn" class="ghost">Sign in / Sign up</button>
+        <button id="openCreateBtn">Đăng bài</button>
+        <button id="logoutBtn" class="ghost">Đăng xuất</button>
       </div>
-      <form id="commentForm" class="form">
-        <input name="content" placeholder="Viết bình luận..." required />
-        <button type="submit">Gửi bình luận</button>
-      </form>
-    `;
+    </header>
 
-    document.getElementById('commentForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      try {
-        const content = new FormData(event.target).get('content');
-        await api.createComment(postId, { content });
-        setMessage('Bình luận thành công.');
-        await openPostPopup(postId);
-        await renderPosts();
-      } catch (error) {
-        setMessage(error.message, true);
-      }
-    });
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="profile card">
+          <div class="avatar-wrap">
+            <img class="avatar" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=320&q=80" alt="avatar" />
+          </div>
+          <h3>devDA</h3>
+          <p class="muted">Blog công nghệ, code và trải nghiệm dev thực tế.</p>
+        </div>
+        <div class="card side-box">
+          <h4>Chủ đề</h4>
+          <ul>
+            <li>Frontend</li>
+            <li>JavaScript</li>
+            <li>Backend</li>
+            <li>Career</li>
+          </ul>
+        </div>
+      </aside>
 
-    openModal(postModal);
-  } catch (error) {
-    setMessage(error.message, true);
-  }
-}
+      <section class="content">
+        <div class="hero card">
+          <h1>Blog bình thường, gọn gàng, dễ đọc ✨</h1>
+          <p class="muted">Bấm vào từng bài để mở popup chi tiết và bình luận ngay trong bài đó.</p>
+          <p id="userStatus">Bạn chưa đăng nhập.</p>
+        </div>
 
-openAuthBtn.addEventListener('click', () => openModal(authModal));
-openCreateBtn.addEventListener('click', () => openModal(createModal));
-logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  updateUserStatus();
-  setMessage('Đã đăng xuất.');
-});
+        <div id="postsRoot" class="posts"></div>
+      </section>
+    </main>
 
-document.querySelectorAll('[data-close]').forEach((button) => {
-  button.addEventListener('click', () => {
-    const targetId = button.getAttribute('data-close');
-    closeModal(document.getElementById(targetId));
-  });
-});
+    <div id="authModal" class="modal hidden">
+      <div class="modal-card">
+        <button class="close" data-close="authModal">✕</button>
+        <h2>Tài khoản</h2>
+        <div class="grid-2">
+          <form id="signupForm" class="form">
+            <h3>Sign up</h3>
+            <input name="name" placeholder="Tên hiển thị" required />
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Mật khẩu" required />
+            <button type="submit">Tạo tài khoản</button>
+          </form>
+          <form id="signinForm" class="form">
+            <h3>Sign in</h3>
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Mật khẩu" required />
+            <button type="submit">Đăng nhập</button>
+          </form>
+        </div>
+      </div>
+    </div>
 
-signupForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  try {
-    const payload = Object.fromEntries(new FormData(signupForm).entries());
-    await api.signup(payload);
-    signupForm.reset();
-    setMessage('Đăng ký thành công. Bạn có thể đăng nhập.');
-  } catch (error) {
-    setMessage(error.message, true);
-  }
-});
+    <div id="createModal" class="modal hidden">
+      <div class="modal-card">
+        <button class="close" data-close="createModal">✕</button>
+        <h2>Đăng bài mới</h2>
+        <form id="postForm" class="form">
+          <input name="title" placeholder="Tiêu đề" required />
+          <input name="excerpt" placeholder="Mô tả ngắn" required />
+          <textarea name="content" rows="6" placeholder="Nội dung" required></textarea>
+          <button type="submit">Publish</button>
+        </form>
+      </div>
+    </div>
 
-signinForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  try {
-    const payload = Object.fromEntries(new FormData(signinForm).entries());
-    const data = await api.signin(payload);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    signinForm.reset();
-    updateUserStatus();
-    closeModal(authModal);
-    setMessage('Đăng nhập thành công.');
-  } catch (error) {
-    setMessage(error.message, true);
-  }
-});
+    <div id="postModal" class="modal hidden">
+      <div class="modal-card post-modal-card">
+        <button class="close" data-close="postModal">✕</button>
+        <div id="postDetail"></div>
+      </div>
+    </div>
 
-postForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  try {
-    const payload = Object.fromEntries(new FormData(postForm).entries());
-    await api.createPost(payload);
-    postForm.reset();
-    closeModal(createModal);
-    setMessage('Đăng bài thành công.');
-    await renderPosts();
-  } catch (error) {
-    setMessage(error.message, true);
-  }
-});
-
-updateUserStatus();
-renderPosts().catch((error) => setMessage(error.message, true));
+    <p id="message"></p>
+    <script src="script.js"></script>
+  </body>
+</html>
