@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>devDA Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">devDA<span>Blog</span></div>
+      <div class="top-actions">
+        <button id="openAuthBtn" class="ghost">Sign in / Sign up</button>
+        <button id="openCreateBtn">Đăng bài</button>
+        <button id="logoutBtn" class="ghost">Đăng xuất</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="profile card">
+          <div class="avatar-wrap">
+            <img class="avatar" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=320&q=80" alt="avatar" />
+          </div>
+          <h3>devDA</h3>
+          <p class="muted">Blog công nghệ, code và trải nghiệm dev thực tế.</p>
+        </div>
+        <div class="card side-box">
+          <h4>Chủ đề</h4>
+          <ul>
+            <li>Frontend</li>
+            <li>JavaScript</li>
+            <li>Backend</li>
+            <li>Career</li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="hero card">
+          <h1>Blog bình thường, gọn gàng, dễ đọc ✨</h1>
+          <p class="muted">Bấm vào từng bài để mở popup chi tiết và bình luận ngay trong bài đó.</p>
+          <p id="userStatus">Bạn chưa đăng nhập.</p>
+        </div>
+
+        <div id="postsRoot" class="posts"></div>
+      </section>
+    </main>
+
+    <div id="authModal" class="modal hidden">
+      <div class="modal-card">
+        <button class="close" data-close="authModal">✕</button>
+        <h2>Tài khoản</h2>
+        <div class="grid-2">
+          <form id="signupForm" class="form">
+            <h3>Sign up</h3>
+            <input name="name" placeholder="Tên hiển thị" required />
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Mật khẩu" required />
+            <button type="submit">Tạo tài khoản</button>
+          </form>
+          <form id="signinForm" class="form">
+            <h3>Sign in</h3>
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Mật khẩu" required />
+            <button type="submit">Đăng nhập</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="createModal" class="modal hidden">
+      <div class="modal-card">
+        <button class="close" data-close="createModal">✕</button>
+        <h2>Đăng bài mới</h2>
+        <form id="postForm" class="form">
+          <input name="title" placeholder="Tiêu đề" required />
+          <input name="excerpt" placeholder="Mô tả ngắn" required />
+          <textarea name="content" rows="6" placeholder="Nội dung" required></textarea>
+          <button type="submit">Publish</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="postModal" class="modal hidden">
+      <div class="modal-card post-modal-card">
+        <button class="close" data-close="postModal">✕</button>
+        <div id="postDetail"></div>
+      </div>
+    </div>
+
+    <p id="message"></p>
+    <script src="script.js"></script>
+  </body>
+</html>

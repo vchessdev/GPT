@@ -1,0 +1,24 @@
+{
+  "users": [],
+  "posts": [
+    {
+      "id": 1,
+      "title": "Roadmap Frontend 2026: Học gì để không bị ngợp?",
+      "excerpt": "Tổng hợp lộ trình từ nền tảng tới framework, testing và tối ưu performance.",
+      "content": "Đây là bài viết mẫu để khởi tạo blog. Bạn có thể sign in để đăng bài mới, bình luận và quản lý nội dung.",
+      "authorId": 0,
+      "authorName": "devDA",
+      "createdAt": "2026-02-23T14:08:30.000Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "userId": 0,
+      "authorName": "devDA",
+      "content": "Welcome đến blog platform! 🚀",
+      "createdAt": "2026-02-23T14:08:30.000Z"
+    }
+  ]
+}
