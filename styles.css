@@ -91,7 +91,40 @@ button.ghost {
 
 .profile { padding: 16px; text-align: center; }
 .side-box { padding: 14px; }
-.side-box ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+.side-box h4 { margin: 0 0 12px; font-size: 1rem; }
+
+.topics-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.topic-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(127, 210, 255, 0.1), rgba(127, 210, 255, 0.05));
+  border: 1px solid rgba(127, 210, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.topic-tag:hover {
+  background: linear-gradient(135deg, rgba(127, 210, 255, 0.2), rgba(127, 210, 255, 0.1));
+  border-color: rgba(127, 210, 255, 0.6);
+  transform: translateX(4px);
+}
+
+.tag-badge {
+  font-size: 1.1rem;
+}
 
 .avatar-wrap {
   width: 110px;
@@ -302,6 +335,81 @@ input, textarea {
   margin: 8px 18px 24px;
   color: #9fffb8;
   min-height: 22px;
+}
+
+.notification-modal {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-modal.hidden {
+  display: none;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.notification-modal.hidden {
+  animation: slideOut 0.3s ease-out;
+}
+
+.notification-content {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 16px;
+  max-width: 380px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.notification-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notification-body.success {
+  color: #9fffb8;
+}
+
+.notification-body.error {
+  color: #ffb5b5;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notification-body p {
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 900px) {

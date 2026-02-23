@@ -63,7 +63,8 @@ const api = {
 };
 
 const postsRoot = document.getElementById('postsRoot');
-const messageEl = document.getElementById('message');
+const notificationModal = document.getElementById('notificationModal');
+const notificationBody = document.getElementById('notificationBody');
 const userStatus = document.getElementById('userStatus');
 const authModal = document.getElementById('authModal');
 const createModal = document.getElementById('createModal');
@@ -73,15 +74,30 @@ const postDetail = document.getElementById('postDetail');
 const openAuthBtn = document.getElementById('openAuthBtn');
 const openCreateBtn = document.getElementById('openCreateBtn');
 const logoutBtn = document.getElementById('logoutBtn');
+const closeNotificationBtn = document.getElementById('closeNotificationBtn');
 
 const signupForm = document.getElementById('signupForm');
 const signinForm = document.getElementById('signinForm');
 const postForm = document.getElementById('postForm');
 
 function setMessage(message, isError = false) {
-  messageEl.style.color = isError ? '#ffb5b5' : '#9fffb8';
-  messageEl.textContent = message;
+  const icon = isError ? '❌' : '✅';
+  notificationBody.innerHTML = `
+    <div class="notification-icon">${icon}</div>
+    <p>${escapeHtml(message)}</p>
+  `;
+  notificationBody.className = `notification-body ${isError ? 'error' : 'success'}`;
+  openModal(notificationModal);
+  
+  // Auto close after 3.5 seconds
+  setTimeout(() => {
+    closeModal(notificationModal);
+  }, 3500);
 }
+
+closeNotificationBtn.addEventListener('click', () => {
+  closeModal(notificationModal);
+});
 
 function getUser() {
   return JSON.parse(localStorage.getItem('user') || 'null');

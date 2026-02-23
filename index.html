@@ -29,12 +29,12 @@
           <p class="muted">Blog công nghệ, code và trải nghiệm dev thực tế.</p>
         </div>
         <div class="card side-box">
-          <h4>Chủ đề</h4>
-          <ul>
-            <li>Frontend</li>
-            <li>JavaScript</li>
-            <li>Backend</li>
-            <li>Career</li>
+          <h4>🏷️ Chủ đề</h4>
+          <ul class="topics-list">
+            <li class="topic-tag"><span class="tag-badge">💻</span> Frontend</li>
+            <li class="topic-tag"><span class="tag-badge">⚡</span> JavaScript</li>
+            <li class="topic-tag"><span class="tag-badge">🔧</span> Backend</li>
+            <li class="topic-tag"><span class="tag-badge">🚀</span> Career</li>
           </ul>
         </div>
       </aside>
@@ -92,7 +92,13 @@
       </div>
     </div>
 
-    <p id="message"></p>
+    <div id="notificationModal" class="notification-modal hidden">
+      <div class="notification-content">
+        <div id="notificationBody"></div>
+        <button id="closeNotificationBtn" class="ghost btn-sm">Đóng</button>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
