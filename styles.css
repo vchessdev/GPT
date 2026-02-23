@@ -33,7 +33,24 @@ body {
 
 .brand { font-weight: 800; }
 .brand span { color: var(--primary); }
-.top-actions { display: flex; gap: 8px; }
+.top-actions { display: flex; gap: 8px; align-items: center; }
+
+#openAuthBtn.user-logged-in {
+  background: transparent;
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+}
+
+.topbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 button {
   border: 0;
@@ -109,7 +126,40 @@ button.ghost {
   border-radius: 14px;
   background: #101932;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+.post-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(127, 210, 255, 0.5);
+}
+
+.post-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.post-author-info strong {
+  font-size: 0.95rem;
+}
+
+.post-author-info .time {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .post-card h3 { margin: 0 0 8px; }
 .meta { color: var(--muted); font-size: 0.9rem; }
 
@@ -159,11 +209,85 @@ input, textarea {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
 .comment-item {
   border-left: 2px solid var(--primary);
-  padding-left: 10px;
-  margin: 8px 0;
+  padding: 12px;
+  padding-left: 14px;
+  margin: 12px 0;
+  background: rgba(127, 210, 255, 0.05);
+  border-radius: 8px;
   color: #d2defd;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(127, 210, 255, 0.5);
+}
+
+.comment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.comment-meta strong {
+  font-size: 0.95rem;
+}
+
+.comment-meta .time {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.post-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.post-author-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.post-detail-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.comments-section {
+  margin: 16px 0;
 }
 
 #message {

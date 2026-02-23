@@ -6,5 +6,13 @@
     "authorName": "devDA",
     "content": "Welcome tới blog nhé 🚀",
     "createdAt": "2026-02-23T14:32:00.000Z"
+  },
+  {
+    "id": 2,
+    "postId": 2,
+    "userId": 2,
+    "authorName": "Bùi Đức Anh",
+    "content": "hay",
+    "createdAt": "2026-02-23T15:06:03.250Z"
   }
 ]

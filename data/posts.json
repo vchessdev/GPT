@@ -15,6 +15,16 @@
     "content": "Từ line-height, khoảng cách, hierarchy tới cách đặt màu chữ, đây là các lỗi nhỏ nhưng làm UX giảm mạnh.",
     "authorId": 1,
     "authorName": "devDA",
-    "createdAt": "2026-02-23T14:45:00.000Z"
+    "createdAt": "2026-02-23T14:45:00.000Z",
+    "votes": 1
+  },
+  {
+    "id": 3,
+    "title": "a",
+    "excerpt": "b",
+    "content": "c",
+    "authorId": 2,
+    "authorName": "Bùi Đức Anh",
+    "createdAt": "2026-02-23T15:06:25.565Z"
   }
 ]

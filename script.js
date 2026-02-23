@@ -51,6 +51,12 @@ const api = {
   createComment(postId, payload) {
     return this.request(`/api/add_comment/${postId}`, { method: 'POST', body: JSON.stringify(payload) });
   },
+  deletePost(postId) {
+    return this.request(`/api/delete_posts/${postId}`, { method: 'DELETE' });
+  },
+  deleteComment(commentId) {
+    return this.request(`/api/delete_comment/${commentId}`, { method: 'DELETE' });
+  },
   vote(postId) {
     return this.request(`/api/votes/${postId}`, { method: 'POST' });
   }
@@ -83,18 +89,32 @@ function getUser() {
 
 async function updateUserStatus() {
   const user = getUser();
+  const topActions = document.querySelector('.top-actions');
+  
   if (!user) {
     userStatus.textContent = 'Bạn chưa đăng nhập.';
+    openAuthBtn.style.display = 'inline-block';
+    openCreateBtn.style.display = 'none';
+    logoutBtn.style.display = 'none';
     return;
   }
 
   try {
     const session = await api.checkSession();
     userStatus.textContent = `Xin chào, ${session.user.name}. Bạn có thể đăng bài và bình luận.`;
+    
+    // Update top bar with user avatar and name
+    openAuthBtn.innerHTML = `<img src="${getAvatarUrl(user.email)}" alt="avatar" class="topbar-avatar" /> ${escapeHtml(user.name)}`;
+    openAuthBtn.style.display = 'none';
+    openCreateBtn.style.display = 'inline-block';
+    logoutBtn.style.display = 'inline-block';
   } catch (error) {
     userStatus.textContent = 'Phiên đăng nhập đã hết hạn.';
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    openAuthBtn.style.display = 'inline-block';
+    openCreateBtn.style.display = 'none';
+    logoutBtn.style.display = 'none';
   }
 }
 
@@ -112,6 +132,10 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function getAvatarUrl(email) {
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`;
+}
+
 async function renderPosts() {
   postsRoot.innerHTML = 'Đang tải bài viết...';
   const posts = await api.getPosts();
@@ -125,9 +149,16 @@ async function renderPosts() {
     .map(
       (post) => `
       <article class="post-card" data-post-id="${post.id}">
+        <div class="post-header">
+          <img src="${getAvatarUrl(post.authorEmail || post.authorName)}" alt="avatar" class="post-avatar" />
+          <div class="post-author-info">
+            <strong>${escapeHtml(post.authorName)}</strong>
+            <span class="time">${new Date(post.createdAt).toLocaleString('vi-VN')}</span>
+          </div>
+        </div>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <p class="meta">${escapeHtml(post.authorName)} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.commentsCount} bình luận · ${post.votes || 0} votes</p>
+        <p class="meta">${post.commentsCount || 0} bình luận · ${post.votes || 0} votes</p>
       </article>
     `
     )
@@ -144,25 +175,70 @@ async function renderPosts() {
 async function openPostPopup(postId) {
   try {
     const [post, comments] = await Promise.all([api.getPost(postId), api.getComments(postId)]);
+    const currentUser = getUser();
+    const isAuthor = currentUser && currentUser.id === post.authorId;
 
     postDetail.innerHTML = `
+      <div class="post-detail-header">
+        <div class="post-author-block">
+          <img src="${getAvatarUrl(post.authorEmail || post.authorName)}" alt="avatar" class="post-detail-avatar" />
+          <div>
+            <strong>${escapeHtml(post.authorName)}</strong>
+            <div class="time">${new Date(post.createdAt).toLocaleString('vi-VN')}</div>
+          </div>
+          ${isAuthor ? `<button id="deletePostBtn" class="ghost btn-sm">Xóa bài</button>` : ''}
+        </div>
+      </div>
       <h2>${escapeHtml(post.title)}</h2>
-      <p class="meta">Tác giả: ${escapeHtml(post.authorName)} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.votes || 0} votes</p>
       <p>${escapeHtml(post.content)}</p>
-      <button id="voteBtn" class="ghost">👍 Vote bài viết</button>
-      <h3>Bình luận</h3>
-      <div>
+      <div class="post-actions">
+        <button id="voteBtn" class="ghost">👍 Vote (${post.votes || 0})</button>
+      </div>
+      <h3>Bình luận (${comments.length})</h3>
+      <div class="comments-section">
         ${comments.length
-          ? comments.map((comment) => `<div class="comment-item"><b>${escapeHtml(comment.authorName)}:</b> ${escapeHtml(comment.content)}</div>`).join('')
+          ? comments.map((comment) => `
+            <div class="comment-item">
+              <div class="comment-header">
+                <img src="${getAvatarUrl(comment.authorEmail || comment.authorName)}" alt="avatar" class="comment-avatar" />
+                <div class="comment-meta">
+                  <strong>${escapeHtml(comment.authorName)}</strong>
+                  <span class="time">${new Date(comment.createdAt).toLocaleString('vi-VN')}</span>
+                </div>
+              </div>
+              <p>${escapeHtml(comment.content)}</p>
+            </div>
+          `).join('')
           : '<p class="muted">Chưa có bình luận.</p>'}
       </div>
-      <form id="commentForm" class="form">
-        <input name="content" placeholder="Viết bình luận..." required />
-        <button type="submit">Gửi bình luận</button>
-      </form>
+      ${currentUser ? `
+        <form id="commentForm" class="form">
+          <input name="content" placeholder="Viết bình luận..." required />
+          <button type="submit">Gửi bình luận</button>
+        </form>
+      ` : '<p class="muted">Đăng nhập để bình luận.</p>'}
     `;
 
+    if (isAuthor) {
+      document.getElementById('deletePostBtn').addEventListener('click', async () => {
+        if (confirm('Bạn chắc chắn muốn xóa bài viết này?')) {
+          try {
+            await api.deletePost(postId);
+            setMessage('Đã xóa bài viết.');
+            closeModal(postModal);
+            await renderPosts();
+          } catch (error) {
+            setMessage(error.message, true);
+          }
+        }
+      });
+    }
+
     document.getElementById('voteBtn').addEventListener('click', async () => {
+      if (!currentUser) {
+        setMessage('Đăng nhập để vote bài viết.', true);
+        return;
+      }
       try {
         await api.vote(postId);
         setMessage('Vote thành công.');
@@ -173,18 +249,21 @@ async function openPostPopup(postId) {
       }
     });
 
-    document.getElementById('commentForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      try {
-        const content = new FormData(event.target).get('content');
-        await api.createComment(postId, { content });
-        setMessage('Bình luận thành công.');
-        await openPostPopup(postId);
-        await renderPosts();
-      } catch (error) {
-        setMessage(error.message, true);
-      }
-    });
+    const commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+      commentForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+          const content = new FormData(event.target).get('content');
+          await api.createComment(postId, { content });
+          setMessage('Bình luận thành công.');
+          await openPostPopup(postId);
+          await renderPosts();
+        } catch (error) {
+          setMessage(error.message, true);
+        }
+      });
+    }
 
     openModal(postModal);
   } catch (error) {
@@ -193,12 +272,20 @@ async function openPostPopup(postId) {
 }
 
 openAuthBtn.addEventListener('click', () => openModal(authModal));
-openCreateBtn.addEventListener('click', () => openModal(createModal));
+openCreateBtn.addEventListener('click', () => {
+  if (!getUser()) {
+    setMessage('Đăng nhập để đăng bài.', true);
+    openModal(authModal);
+  } else {
+    openModal(createModal);
+  }
+});
 logoutBtn.addEventListener('click', () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   updateUserStatus();
   setMessage('Đã đăng xuất.');
+  renderPosts();
 });
 
 document.querySelectorAll('[data-close]').forEach((button) => {
@@ -226,11 +313,13 @@ signinForm.addEventListener('submit', async (event) => {
     const payload = Object.fromEntries(new FormData(signinForm).entries());
     const data = await api.signin(payload);
     localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+    // Store user with email
+    localStorage.setItem('user', JSON.stringify({ ...data.user, email: payload.email }));
     signinForm.reset();
     await updateUserStatus();
     closeModal(authModal);
     setMessage('Đăng nhập thành công.');
+    await renderPosts();
   } catch (error) {
     setMessage(error.message, true);
   }
