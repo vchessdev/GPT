@@ -4,7 +4,7 @@ const { requireAuth } = require('./middleware/auth');
 
 const router = express.Router();
 
-router.post('/:postId', requireAuth, (req, res) => {
+router.post('/:postId', requireAuth, async (req, res) => {
   const postId = Number(req.params.postId);
   const posts = readJson('posts');
   const post = posts.find((item) => item.id === postId);
@@ -14,7 +14,7 @@ router.post('/:postId', requireAuth, (req, res) => {
   }
 
   post.votes = Number(post.votes || 0) + 1;
-  writeJson('posts', posts);
+  await writeJson('posts', posts);
   return res.json({ postId, votes: post.votes });
 });
 

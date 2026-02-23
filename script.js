@@ -106,6 +106,12 @@ function closeModal(modal) {
   modal.classList.add('hidden');
 }
 
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 async function renderPosts() {
   postsRoot.innerHTML = 'Đang tải bài viết...';
   const posts = await api.getPosts();
@@ -119,9 +125,9 @@ async function renderPosts() {
     .map(
       (post) => `
       <article class="post-card" data-post-id="${post.id}">
-        <h3>${post.title}</h3>
-        <p>${post.excerpt}</p>
-        <p class="meta">${post.authorName} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.commentsCount} bình luận · ${post.votes || 0} votes</p>
+        <h3>${escapeHtml(post.title)}</h3>
+        <p>${escapeHtml(post.excerpt)}</p>
+        <p class="meta">${escapeHtml(post.authorName)} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.commentsCount} bình luận · ${post.votes || 0} votes</p>
       </article>
     `
     )
@@ -140,14 +146,14 @@ async function openPostPopup(postId) {
     const [post, comments] = await Promise.all([api.getPost(postId), api.getComments(postId)]);
 
     postDetail.innerHTML = `
-      <h2>${post.title}</h2>
-      <p class="meta">Tác giả: ${post.authorName} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.votes || 0} votes</p>
-      <p>${post.content}</p>
+      <h2>${escapeHtml(post.title)}</h2>
+      <p class="meta">Tác giả: ${escapeHtml(post.authorName)} · ${new Date(post.createdAt).toLocaleString('vi-VN')} · ${post.votes || 0} votes</p>
+      <p>${escapeHtml(post.content)}</p>
       <button id="voteBtn" class="ghost">👍 Vote bài viết</button>
       <h3>Bình luận</h3>
       <div>
         ${comments.length
-          ? comments.map((comment) => `<div class="comment-item"><b>${comment.authorName}:</b> ${comment.content}</div>`).join('')
+          ? comments.map((comment) => `<div class="comment-item"><b>${escapeHtml(comment.authorName)}:</b> ${escapeHtml(comment.content)}</div>`).join('')
           : '<p class="muted">Chưa có bình luận.</p>'}
       </div>
       <form id="commentForm" class="form">

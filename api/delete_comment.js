@@ -4,7 +4,7 @@ const { requireAuth } = require('./middleware/auth');
 
 const router = express.Router();
 
-router.delete('/:id', requireAuth, (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   const commentId = Number(req.params.id);
   const comments = readJson('comments');
   const comment = comments.find((item) => item.id === commentId);
@@ -17,7 +17,7 @@ router.delete('/:id', requireAuth, (req, res) => {
     return res.status(403).json({ message: 'Bạn không có quyền xoá comment này.' });
   }
 
-  writeJson('comments', comments.filter((item) => item.id !== commentId));
+  await writeJson('comments', comments.filter((item) => item.id !== commentId));
   return res.json({ message: 'Đã xoá comment.' });
 });
 

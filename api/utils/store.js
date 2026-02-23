@@ -9,12 +9,25 @@ const FILES = {
   comments: path.join(DATA_DIR, 'comments.json')
 };
 
+const writeQueue = {};
+
 function readJson(type) {
   return JSON.parse(fs.readFileSync(FILES[type], 'utf-8'));
 }
 
 function writeJson(type, data) {
-  fs.writeFileSync(FILES[type], JSON.stringify(data, null, 2));
+  if (!writeQueue[type]) {
+    writeQueue[type] = Promise.resolve();
+  }
+  writeQueue[type] = writeQueue[type].then(() => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(FILES[type], JSON.stringify(data, null, 2), (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  });
+  return writeQueue[type];
 }
 
 function nextId(items) {

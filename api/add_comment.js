@@ -4,7 +4,7 @@ const { requireAuth } = require('./middleware/auth');
 
 const router = express.Router();
 
-router.post('/:postId', requireAuth, (req, res) => {
+router.post('/:postId', requireAuth, async (req, res) => {
   const { content } = req.body;
   const postId = Number(req.params.postId);
 
@@ -29,7 +29,7 @@ router.post('/:postId', requireAuth, (req, res) => {
   };
 
   comments.push(comment);
-  writeJson('comments', comments);
+  await writeJson('comments', comments);
   return res.status(201).json(comment);
 });
 

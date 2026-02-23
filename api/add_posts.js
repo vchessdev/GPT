@@ -4,7 +4,7 @@ const { requireAuth } = require('./middleware/auth');
 
 const router = express.Router();
 
-router.post('/', requireAuth, (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   const { title, excerpt, content } = req.body;
   if (!title || !excerpt || !content) {
     return res.status(400).json({ message: 'Vui lòng nhập title, excerpt, content.' });
@@ -22,7 +22,7 @@ router.post('/', requireAuth, (req, res) => {
   };
 
   posts.push(post);
-  writeJson('posts', posts);
+  await writeJson('posts', posts);
   return res.status(201).json(post);
 });
 

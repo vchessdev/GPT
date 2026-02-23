@@ -4,7 +4,7 @@ const { requireAuth } = require('./middleware/auth');
 
 const router = express.Router();
 
-router.delete('/:id', requireAuth, (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   const postId = Number(req.params.id);
   const posts = readJson('posts');
   const post = posts.find((item) => item.id === postId);
@@ -20,8 +20,10 @@ router.delete('/:id', requireAuth, (req, res) => {
   const nextPosts = posts.filter((item) => item.id !== postId);
   const comments = readJson('comments').filter((item) => item.postId !== postId);
 
-  writeJson('posts', nextPosts);
-  writeJson('comments', comments);
+  await Promise.all([
+    writeJson('posts', nextPosts),
+    writeJson('comments', comments)
+  ]);
   return res.json({ message: 'Đã xoá bài viết.' });
 });
 

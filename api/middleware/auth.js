@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'devda-super-secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('Fatal: JWT_SECRET environment variable must be set. Do not use hardcoded secrets in production!');
+}
 
 function requireAuth(req, res, next) {
   const header = req.headers.authorization || '';
