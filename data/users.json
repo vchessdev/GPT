@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "devDA",
+    "email": "devda@example.com",
+    "passwordHash": "$2a$10$0.8Ig32fD0aQjN6ak2P3L.JgeMpc2A.f4m4fK8xpw6N6x.6hLqD9C",
+    "createdAt": "2026-02-23T14:30:00.000Z"
+  }
+]
