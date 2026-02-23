@@ -197,18 +197,24 @@ async function openPostPopup(postId) {
       <h3>Bình luận (${comments.length})</h3>
       <div class="comments-section">
         ${comments.length
-          ? comments.map((comment) => `
-            <div class="comment-item">
-              <div class="comment-header">
-                <img src="${getAvatarUrl(comment.authorEmail || comment.authorName)}" alt="avatar" class="comment-avatar" />
-                <div class="comment-meta">
-                  <strong>${escapeHtml(comment.authorName)}</strong>
-                  <span class="time">${new Date(comment.createdAt).toLocaleString('vi-VN')}</span>
+          ? comments.map((comment) => {
+              const isCommentAuthor = currentUser && currentUser.id === comment.userId;
+              return `
+                <div class="comment-item" data-comment-id="${comment.id}">
+                  <div class="comment-header">
+                    <div class="comment-author">
+                      <img src="${getAvatarUrl(comment.authorEmail || comment.authorName)}" alt="avatar" class="comment-avatar" />
+                      <div class="comment-meta">
+                        <strong>${escapeHtml(comment.authorName)}</strong>
+                        <span class="time">${new Date(comment.createdAt).toLocaleString('vi-VN')}</span>
+                      </div>
+                    </div>
+                    ${isCommentAuthor ? `<button class="delete-comment-btn ghost btn-sm" data-comment-id="${comment.id}">Xóa</button>` : ''}
+                  </div>
+                  <p>${escapeHtml(comment.content)}</p>
                 </div>
-              </div>
-              <p>${escapeHtml(comment.content)}</p>
-            </div>
-          `).join('')
+              `;
+            }).join('')
           : '<p class="muted">Chưa có bình luận.</p>'}
       </div>
       ${currentUser ? `
@@ -233,6 +239,23 @@ async function openPostPopup(postId) {
         }
       });
     }
+
+    // Add delete comment handlers
+    document.querySelectorAll('.delete-comment-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const commentId = Number(btn.getAttribute('data-comment-id'));
+        if (confirm('Bạn chắc chắn muốn xóa bình luận này?')) {
+          try {
+            await api.deleteComment(commentId);
+            setMessage('Đã xóa bình luận.');
+            await openPostPopup(postId);
+            await renderPosts();
+          } catch (error) {
+            setMessage(error.message, true);
+          }
+        }
+      });
+    });
 
     document.getElementById('voteBtn').addEventListener('click', async () => {
       if (!currentUser) {
