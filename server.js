@@ -20,6 +20,16 @@ app.use('/api/delete_comment', require('./api/delete_comment'));
 app.use('/api/check_session', require('./api/check_session'));
 app.use('/api/votes', require('./api/votes'));
 
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'API endpoint không tồn tại.' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: 'Lỗi máy chủ nội bộ.' });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

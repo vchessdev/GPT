@@ -11,7 +11,15 @@ const api = {
     }
 
     const response = await fetch(url, { ...options, headers });
-    const data = await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    const rawBody = await response.text();
+
+    let data;
+    if (contentType.includes('application/json')) {
+      data = rawBody ? JSON.parse(rawBody) : {};
+    } else {
+      data = { message: rawBody || 'Phản hồi không phải JSON từ server.' };
+    }
 
     if (!response.ok) {
       throw new Error(data.message || 'Có lỗi xảy ra');
