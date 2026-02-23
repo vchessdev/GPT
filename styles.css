@@ -1,0 +1,263 @@
+:root {
+  --bg-1: #121232;
+  --bg-2: #2f2454;
+  --card: rgba(114, 91, 161, 0.45);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: #f4f4ff;
+  --muted: #cfd0f8;
+  --accent: #8fd0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  overflow-x: hidden;
+}
+
+.bg-glow {
+  position: fixed;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  opacity: 0.5;
+}
+
+.glow-left {
+  background: #4f86ff;
+  left: -120px;
+  top: 25%;
+}
+
+.glow-right {
+  background: #d26eff;
+  right: -130px;
+  top: 10%;
+}
+
+.layout {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 42px 20px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+}
+
+.glass,
+.side-card {
+  border: 1px solid var(--stroke);
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+}
+
+.side-card {
+  padding: 18px;
+  align-self: start;
+}
+
+.side-card h2 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
+.quick-link {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.quick-link:hover {
+  transform: translateX(6px);
+  background: rgba(143, 208, 255, 0.25);
+}
+
+.music-widget {
+  margin-top: 18px;
+  padding: 16px;
+  background: radial-gradient(circle at top, #192d3f, #0e1420);
+  border-radius: 16px;
+  border: 1px solid rgba(84, 255, 194, 0.3);
+}
+
+.music-widget .now-playing {
+  color: #48ff8f;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.music-widget h3 {
+  margin: 0;
+}
+
+.music-widget span {
+  color: #d2d2e7;
+  font-size: 0.9rem;
+}
+
+.progress {
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  margin-top: 12px;
+  background: linear-gradient(to right, #48ff8f 72%, rgba(255, 255, 255, 0.15) 72%);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.controls button {
+  border: 0;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+  color: #48ff8f;
+  background: rgba(72, 255, 143, 0.15);
+}
+
+.main-content {
+  display: grid;
+  gap: 20px;
+}
+
+.profile-card,
+.skills-card {
+  padding: 28px;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.avatar-wrap {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 118, 201, 0.7);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transform: rotate(0deg) scale(1);
+  transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.avatar-wrap:hover .avatar {
+  transform: rotate(720deg) scale(1.12);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.quote {
+  margin: 8px 0 4px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.date {
+  margin: 0;
+  color: #ffbdf1;
+}
+
+.intro {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  line-height: 1.6;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.socials {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.socials a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.skills-card h2 {
+  margin-top: 0;
+}
+
+.skills-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.bar > div {
+  height: 100%;
+  border-radius: inherit;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-card {
+    order: 2;
+  }
+
+  .profile-top {
+    flex-direction: column;
+    text-align: center;
+  }
+}
