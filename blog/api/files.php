@@ -27,6 +27,7 @@ switch($action) {
  * Upload file
  */
 function handleUpload() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -99,6 +100,7 @@ function handleUpload() {
  * Danh sách files
  */
 function handleList() {
+    global $db;
     $type = $_GET['type'] ?? null;
     $uploaderId = $_GET['uploader_id'] ?? null;
     
@@ -115,6 +117,7 @@ function handleList() {
  * Xoá file
  */
 function handleDelete() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }

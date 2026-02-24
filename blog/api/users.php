@@ -33,6 +33,7 @@ switch($action) {
  */
 function handleList() {
     global $db;
+    global $db;
     $users = $db->getAll('users');
     
     // Bỏ password trước khi trả về
@@ -47,6 +48,7 @@ function handleList() {
  * Cập nhật user (admin only)
  */
 function handleUpdate() {
+    global $db;
     global $db;
     
     $userId = $_POST['id'] ?? null;
@@ -100,6 +102,7 @@ function handleUpdate() {
  * Xoá user (admin only)
  */
 function handleDelete() {
+    global $db;
     global $db;
     
     $userId = $_POST['id'] ?? null;

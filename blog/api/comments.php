@@ -30,6 +30,7 @@ switch($action) {
  * Tạo bình luận mới
  */
 function handleCreate() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập để bình luận'], 401);
     }
@@ -77,6 +78,7 @@ function handleCreate() {
  * Xoá bình luận
  */
 function handleDelete() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -113,6 +115,7 @@ function handleDelete() {
  * Danh sách bình luận
  */
 function handleList() {
+    global $db;
     $postId = $_GET['post_id'] ?? null;
     
     if (!$postId) {
@@ -144,6 +147,7 @@ function handleList() {
  * Ẩn bình luận (admin only)
  */
 function handleHide() {
+    global $db;
     if (!isAdmin()) {
         jsonResponse(['error' => 'Bạn không có quyền thực hiện hành động này'], 403);
     }

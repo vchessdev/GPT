@@ -36,6 +36,7 @@ switch($action) {
  * Tạo bài viết mới
  */
 function handleCreate() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -95,6 +96,7 @@ function handleCreate() {
  * Cập nhật bài viết
  */
 function handleUpdate() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -156,6 +158,7 @@ function handleUpdate() {
  * Xoá bài viết
  */
 function handleDelete() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -210,6 +213,7 @@ function handleDelete() {
  * Lấy bài viết đơn
  */
 function handleGet() {
+    global $db;
     $postId = $_GET['id'] ?? null;
     $slug = $_GET['slug'] ?? null;
     
@@ -260,6 +264,7 @@ function handleGet() {
  * Danh sách bài viết
  */
 function handleList() {
+    global $db;
     $page = (int)($_GET['page'] ?? 1);
     $limit = (int)($_GET['limit'] ?? 10);
     $category = $_GET['category'] ?? null;
@@ -298,6 +303,7 @@ function handleList() {
  * Tìm kiếm bài viết
  */
 function handleSearch() {
+    global $db;
     $q = validateInput($_GET['q'] ?? '');
     
     if (strlen($q) < 2) {

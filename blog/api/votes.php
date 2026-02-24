@@ -27,6 +27,7 @@ switch($action) {
  * Vote (like/dislike)
  */
 function handleVote() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập để vote'], 401);
     }
@@ -95,6 +96,7 @@ function handleVote() {
  * Bỏ vote
  */
 function handleUnvote() {
+    global $db;
     if (!isLoggedIn()) {
         jsonResponse(['error' => 'Bạn cần đăng nhập'], 401);
     }
@@ -124,6 +126,7 @@ function handleUnvote() {
  * Lấy thông tin vote
  */
 function handleGetVotes() {
+    global $db;
     $postId = $_GET['post_id'] ?? null;
     
     if (!$postId) {

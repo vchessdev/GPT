@@ -30,6 +30,8 @@ switch($action) {
  * Đăng nhập
  */
 function handleLogin() {
+    global $db;
+    
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         jsonResponse(['error' => 'Phương thức không hợp lệ'], 400);
     }
@@ -88,6 +90,8 @@ function handleLogin() {
  * Đăng ký
  */
 function handleRegister() {
+    global $db;
+    
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         jsonResponse(['error' => 'Phương thức không hợp lệ'], 400);
     }
@@ -154,6 +158,8 @@ function handleRegister() {
  * Đăng xuất
  */
 function handleLogout() {
+    global $db;
+    
     if (isset($_SESSION['user_id'])) {
         $db->create('logs', [
             'action' => 'logout',

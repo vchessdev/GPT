@@ -29,6 +29,7 @@ switch($action) {
  */
 function handleList() {
     global $db;
+    global $db;
     $logs = $db->getAll('logs');
     
     // Sắp xếp theo ngày mới nhất
@@ -46,6 +47,7 @@ function handleList() {
  * Xoá tất cả logs (admin only)
  */
 function handleClear() {
+    global $db;
     global $db;
     
     if ($db->write('logs', [])) {

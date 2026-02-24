@@ -5,7 +5,7 @@
  */
 
 // Xác định base URL (tự động detect từ server)
-$baseURL = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . '/blog';
+$baseURL = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/blog';
 define('BASE_URL', $baseURL);
 
 // Xác định đường dẫn thư mục
@@ -86,4 +86,7 @@ function sanitizeFileName($filename) {
 
 // Khởi động database
 require_once API_DIR . '/database.php';
+
+// Tạo global $db instance
+$db = Database::getInstance();
 ?>

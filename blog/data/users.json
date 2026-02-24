@@ -1,0 +1,11 @@
+[
+    {
+        "id": "admin_1771942192",
+        "username": "admin",
+        "email": "admin@devda.blog",
+        "password": "$2y$10$JmH6eSNHE5gePn1ZYeBuyu4LDoU9UoAoPgI0MEDOo9y.fBLJyja..",
+        "role": "admin",
+        "created_at": "2026-02-24 14:09:52",
+        "status": "active"
+    }
+]
