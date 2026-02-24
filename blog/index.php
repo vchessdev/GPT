@@ -23,6 +23,7 @@ require_once __DIR__ . '/config.php';
                 </li>
                 <li id="userLinks" style="display:none;">
                     <span id="username"></span>
+                    <a href="<?php echo BASE_URL; ?>/post-form.php" class="btn btn-sm btn-primary" style="margin-left: 10px;">📝 Đăng Bài</a>
                     <a href="<?php echo BASE_URL; ?>?page=my-posts">Bài Của Tôi</a>
                     <a href="<?php echo BASE_URL; ?>?page=profile">Hồ Sơ</a>
                     <a href="#" id="logoutBtn">Đăng Xuất</a>
