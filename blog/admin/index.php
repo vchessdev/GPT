@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../config.php';
 
 // Kiểm tra admin login
 if (!isLoggedIn() || !isAdmin()) {
@@ -96,9 +96,9 @@ if (!isLoggedIn() || !isAdmin()) {
                 const [usersRes, postsRes, commentsRes, filesRes, votesRes, logsRes] = await Promise.all([
                     fetch('<?php echo BASE_URL; ?>/api/users.php?action=list'),
                     fetch('<?php echo BASE_URL; ?>/api/posts.php?action=list'),
-                    fetch('<?php echo BASE_URL; ?>/api/comments.php?action=list?post_id=all'),
+                    fetch('<?php echo BASE_URL; ?>/api/comments.php?action=list'),
                     fetch('<?php echo BASE_URL; ?>/api/files.php?action=list'),
-                    fetch('<?php echo BASE_URL; ?>/api/votes.php?action=getVotes?post_id=all'),
+                    fetch('<?php echo BASE_URL; ?>/api/votes.php?action=getVotes'),
                     fetch('<?php echo BASE_URL; ?>/api/logs.php?action=list')
                 ]);
 

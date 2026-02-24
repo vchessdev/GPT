@@ -129,10 +129,16 @@ function handleGetVotes() {
     global $db;
     $postId = $_GET['post_id'] ?? null;
     
+    // Nếu không có post_id, trả về tất cả votes (cho admin)
     if (!$postId) {
-        jsonResponse(['error' => 'ID bài viết không hợp lệ'], 400);
+        $allVotes = $db->getAll('votes');
+        jsonResponse([
+            'votes' => $allVotes,
+            'total' => count($allVotes)
+        ]);
     }
     
+    // Nếu có post_id, trả về votes của bài viết đó
     $likes = $db->filter('votes', function($v) use ($postId) {
         return $v['post_id'] === $postId && $v['type'] === 'like';
     });
@@ -144,7 +150,6 @@ function handleGetVotes() {
     $userVote = null;
     if (isLoggedIn()) {
         $userId = $_SESSION['user_id'];
-        $vote = $db->find('votes', 'post_id', $postId);
         
         $allVotes = $db->filter('votes', function($v) use ($postId, $userId) {
             return $v['post_id'] === $postId && $v['user_id'] === $userId;
