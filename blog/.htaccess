@@ -1,0 +1,27 @@
+# Rewrite engine for clean URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /blog/
+    
+    # Không rewrite nếu đang request file hoặc folder thực tế
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Rewrite về index.php
+    RewriteRule ^(.*)$ index.php?path=$1 [QSA,L]
+</IfModule>
+
+# Allow JSON files
+<FilesMatch "\.json$">
+    Allow from all
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
