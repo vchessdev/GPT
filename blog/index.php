@@ -17,6 +17,9 @@ require_once __DIR__ . '/config.php';
                 <li><a href="<?php echo BASE_URL; ?>">Trang Chủ</a></li>
                 <li><a href="<?php echo BASE_URL; ?>?page=posts">Bài Viết</a></li>
                 <li><a href="<?php echo BASE_URL; ?>?page=search">Tìm Kiếm</a></li>
+                <li style="margin-left: auto;">
+                    <button id="darkModeBtn" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+                </li>
                 <li id="authLinks">
                     <a href="<?php echo BASE_URL; ?>/login.php">Đăng Nhập</a>
                     <a href="<?php echo BASE_URL; ?>/register.php">Đăng Ký</a>

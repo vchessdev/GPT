@@ -277,3 +277,22 @@ if (typeof module !== 'undefined' && module.exports) {
         votePost, getVotes, uploadFile
     };
 }
+
+/**
+ * Dark Mode Toggle
+ */
+function initDarkMode() {
+    const isDark = localStorage.getItem('darkMode') === 'true';
+    if (isDark) {
+        document.documentElement.classList.add('dark-mode');
+    }
+}
+
+function toggleDarkMode() {
+    const isDark = document.documentElement.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+    return isDark;
+}
+
+// Initialize dark mode on page load
+document.addEventListener('DOMContentLoaded', initDarkMode);

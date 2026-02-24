@@ -21,6 +21,9 @@ if (!isLoggedIn()) {
             <ul class="nav-menu">
                 <li><a href="<?php echo BASE_URL; ?>">Trang Chủ</a></li>
                 <li><a href="<?php echo BASE_URL; ?>/post.php">Bài Viết</a></li>
+                <li style="margin-left: auto;">
+                    <button id="darkModeBtn" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+                </li>
                 <li id="userLinks">
                     <span id="username"></span>
                     <a href="<?php echo BASE_URL; ?>/post-form.php" class="btn btn-sm btn-primary">📝 Đăng Bài</a>
