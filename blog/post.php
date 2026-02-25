@@ -190,9 +190,6 @@ require_once __DIR__ . '/config.php';
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 DevDA Blog System. All rights reserved.</p>
-    </footer>
 
     <script src="<?php echo BASE_URL; ?>/assets/js/app.js"></script>
     <script>

@@ -21,7 +21,7 @@ require_once __DIR__ . '/config.php';
                 <span>📚</span>
                 <span class="text">Bài Viết</span>
             </a>
-            <a href="<?php echo BASE_URL; ?>?page=search" class="sidebar-nav-item">
+            <a href="<?php echo BASE_URL; ?>/search.php" class="sidebar-nav-item">
                 <span>🔍</span>
                 <span class="text">Tìm Kiếm</span>
             </a>

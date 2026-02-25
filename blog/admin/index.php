@@ -19,75 +19,121 @@ if (!isLoggedIn() || !isAdmin()) {
         <aside class="sidebar">
             <div class="logo">⚙️ Admin</div>
             <nav class="admin-menu">
-                <a href="<?php echo BASE_URL; ?>/admin/" class="menu-item active">Dashboard</a>
-                <a href="<?php echo BASE_URL; ?>/admin/users.php" class="menu-item">👥 Quản Lý User</a>
-                <a href="<?php echo BASE_URL; ?>/admin/posts.php" class="menu-item">📝 Quản Lý Bài</a>
-                <a href="<?php echo BASE_URL; ?>/admin/comments.php" class="menu-item">💬 Bình Luận</a>
-                <a href="<?php echo BASE_URL; ?>/admin/files.php" class="menu-item">📁 File</a>
-                <a href="<?php echo BASE_URL; ?>/admin/votes.php" class="menu-item">👍 Vote</a>
-                <a href="<?php echo BASE_URL; ?>/admin/logs.php" class="menu-item">📋 Logs</a>
+                <a href="<?php echo BASE_URL; ?>/admin/" class="menu-item active">
+                    <span>📊</span>
+                    <span class="text">Dashboard</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/users.php" class="menu-item">
+                    <span>👥</span>
+                    <span class="text">Users</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/posts.php" class="menu-item">
+                    <span>📝</span>
+                    <span class="text">Posts</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/comments.php" class="menu-item">
+                    <span>💬</span>
+                    <span class="text">Comments</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/files.php" class="menu-item">
+                    <span>📁</span>
+                    <span class="text">Files</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/votes.php" class="menu-item">
+                    <span>👍</span>
+                    <span class="text">Votes</span>
+                </a>
+                <a href="<?php echo BASE_URL; ?>/admin/logs.php" class="menu-item">
+                    <span>📋</span>
+                    <span class="text">Logs</span>
+                </a>
                 <hr>
-                <a href="<?php echo BASE_URL; ?>" class="menu-item">← Quay Về</a>
-                <a href="#" id="logoutAdminBtn" class="menu-item logout">🚪 Đăng Xuất</a>
+                <a href="<?php echo BASE_URL; ?>" class="menu-item">
+                    <span>←</span>
+                    <span class="text">Home</span>
+                </a>
+                <a href="#" id="logoutAdminBtn" class="menu-item logout">
+                    <span>🚪</span>
+                    <span class="text">Logout</span>
+                </a>
             </nav>
         </aside>
 
         <main class="admin-content">
             <header class="admin-header">
                 <div>
-                    <h1>Dashboard</h1>
-                    <p>Chào mừng, <span id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></span></p>
+                    <h1>⚡ Dashboard</h1>
+                    <p>Welcome back, <strong id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
                 </div>
-                <div>
-                    <a href="<?php echo BASE_URL; ?>/profile.php" class="btn btn-primary">👤 Hồ Sơ</a>
-                </div>
+                <a href="<?php echo BASE_URL; ?>/profile.php" class="btn btn-primary">👤 Profile</a>
             </header>
 
-            <div class="dashboard-grid">
-                <div class="stat-card">
-                    <h3>Người Dùng</h3>
-                    <div class="stat-number" id="userCount">0</div>
+            <div class="stats-wrapper">
+                <div class="stat-card card-blue">
+                    <div class="card-icon">👥</div>
+                    <div class="card-content">
+                        <div class="card-label">Users</div>
+                        <div class="card-number" id="userCount">0</div>
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <h3>Bài Viết</h3>
-                    <div class="stat-number" id="postCount">0</div>
+                <div class="stat-card card-green">
+                    <div class="card-icon">📝</div>
+                    <div class="card-content">
+                        <div class="card-label">Posts</div>
+                        <div class="card-number" id="postCount">0</div>
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <h3>Bình Luận</h3>
-                    <div class="stat-number" id="commentCount">0</div>
+                <div class="stat-card card-purple">
+                    <div class="card-icon">💬</div>
+                    <div class="card-content">
+                        <div class="card-label">Comments</div>
+                        <div class="card-number" id="commentCount">0</div>
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <h3>File</h3>
-                    <div class="stat-number" id="fileCount">0</div>
+                <div class="stat-card card-orange">
+                    <div class="card-icon">📁</div>
+                    <div class="card-content">
+                        <div class="card-label">Files</div>
+                        <div class="card-number" id="fileCount">0</div>
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <h3>Tổng Vote</h3>
-                    <div class="stat-number" id="voteCount">0</div>
+                <div class="stat-card card-pink">
+                    <div class="card-icon">👍</div>
+                    <div class="card-content">
+                        <div class="card-label">Votes</div>
+                        <div class="card-number" id="voteCount">0</div>
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <h3>Tổng Lượt Xem</h3>
-                    <div class="stat-number" id="viewCount">0</div>
+                <div class="stat-card card-cyan">
+                    <div class="card-icon">👀</div>
+                    <div class="card-content">
+                        <div class="card-label">Views</div>
+                        <div class="card-number" id="viewCount">0</div>
+                    </div>
                 </div>
             </div>
 
-            <section class="recent-logs">
-                <h2>Hoạt Động Gần Đây</h2>
-                <table>
+            <section class="recent-activity">
+                <div class="section-header">
+                    <h2>📊 Recent Activity</h2>
+                    <span class="refresh-btn" onclick="loadStats()">🔄</span>
+                </div>
+                <table class="activity-table">
                     <thead>
                         <tr>
-                            <th>Hành Động</th>
-                            <th>Người Dùng</th>
-                            <th>Chi Tiết</th>
-                            <th>Thời Gian</th>
+                            <th>Action</th>
+                            <th>User</th>
+                            <th>Details</th>
+                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody id="logsBody">
-                        <tr><td colspan="4">Đang tải...</td></tr>
+                        <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -95,7 +141,6 @@ if (!isLoggedIn() || !isAdmin()) {
     </div>
 
     <script>
-        // Tải thống kê
         async function loadStats() {
             try {
                 const [usersRes, postsRes, commentsRes, filesRes, votesRes, logsRes] = await Promise.all([
@@ -120,18 +165,16 @@ if (!isLoggedIn() || !isAdmin()) {
                 document.getElementById('fileCount').textContent = files.files?.length || 0;
                 document.getElementById('voteCount').textContent = votes.votes?.length || 0;
 
-                // Tính tổng views
                 let totalViews = 0;
                 if (posts.posts) {
                     totalViews = posts.posts.reduce((sum, p) => sum + (p.views || 0), 0);
                 }
                 document.getElementById('viewCount').textContent = totalViews;
 
-                // Tải logs
                 if (logs.logs && logs.logs.length > 0) {
-                    let html = logs.logs.slice(0, 10).map(log => `
+                    let html = logs.logs.slice(0, 8).map(log => `
                         <tr>
-                            <td>${log.action}</td>
+                            <td><span class="badge">${log.action}</span></td>
                             <td>${log.user_id || 'System'}</td>
                             <td>${log.details}</td>
                             <td>${log.created_at}</td>
@@ -144,7 +187,6 @@ if (!isLoggedIn() || !isAdmin()) {
             }
         }
 
-        // Logout
         document.getElementById('logoutAdminBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             await fetch('<?php echo BASE_URL; ?>/api/auth.php?action=logout');
@@ -152,7 +194,6 @@ if (!isLoggedIn() || !isAdmin()) {
         });
 
         loadStats();
-        // Refresh stats every 30 seconds
         setInterval(loadStats, 30000);
     </script>
 </body>
