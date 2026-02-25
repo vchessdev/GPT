@@ -108,12 +108,25 @@ require_once __DIR__ . '/config.php';
                 let html = '';
                 if (data.posts && data.posts.length > 0) {
                     data.posts.slice(0, 6).forEach(post => {
+                        const thumbnail = post.thumbnail ? 
+                            `<img src="${post.thumbnail}" alt="${post.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md) var(--radius-md) 0 0; margin: -12px -12px 12px -12px;">` : 
+                            `<div style="width: 100%; height: 200px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: var(--radius-md) var(--radius-md) 0 0; margin: -12px -12px 12px -12px; display: flex; align-items: center; justify-content: center; font-size: 48px;">📄</div>`;
+                        
                         html += `
-                            <article class="card">
-                                <h3><a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}">${post.title}</a></h3>
-                                <p class="stat-label" style="margin-top: 8px;">${post.category} | ${post.created_at}</p>
-                                <p style="margin-top: 12px; color: var(--text-secondary);">${post.content.substring(0, 150)}...</p>
-                                <a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}" style="color: var(--primary); text-decoration: none; margin-top: 12px; display: inline-block; font-weight: 600;">Đọc Thêm →</a>
+                            <article class="card" style="overflow: hidden; display: flex; flex-direction: column;">
+                                ${thumbnail}
+                                <div style="padding: 12px;">
+                                    <h3 style="margin-bottom: 8px;"><a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}" style="color: var(--text-primary); text-decoration: none;">${post.title}</a></h3>
+                                    <p class="stat-label" style="margin: 8px 0; font-size: 12px;">
+                                        <span style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 3px;">${post.category || 'Khác'}</span>
+                                        <span style="color: var(--text-light);">• ${new Date(post.created_at).toLocaleDateString('vi-VN')}</span>
+                                    </p>
+                                    <p style="margin-top: 8px; margin-bottom: 12px; color: var(--text-secondary); font-size: 14px; flex: 1;">${post.content.substring(0, 100)}...</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border);">
+                                        <span style="font-size: 12px; color: var(--text-light);">👀 ${post.views || 0} lượt xem</span>
+                                        <a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 13px;">Đọc →</a>
+                                    </div>
+                                </div>
                             </article>
                         `;
                     });

@@ -10,7 +10,7 @@ $db = Database::getInstance();
 $currentUser = $db->find('users', 'id', $userId);
 $userProfile = $db->find('profiles', 'user_id', $userId);
 $userPosts = $db->filter('posts', function($post) use ($userId) {
-    return $post['user_id'] === $userId;
+    return (int)$post['user_id'] === (int)$userId;
 });
 
 if (!$userProfile) {

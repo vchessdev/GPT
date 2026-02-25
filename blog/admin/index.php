@@ -63,9 +63,9 @@ if (!isLoggedIn() || !isAdmin()) {
             <header class="admin-header">
                 <div>
                     <h1>⚡ Dashboard</h1>
-                    <p>Welcome back, <strong id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
+                    <p>Xin chào, <strong id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
                 </div>
-                <a href="<?php echo BASE_URL; ?>/profile.php" class="btn btn-primary">👤 Profile</a>
+                <a href="<?php echo BASE_URL; ?>/profile.php" class="btn btn-primary">👤 Hồ Sơ</a>
             </header>
 
             <div class="stats-wrapper">

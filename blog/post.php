@@ -10,36 +10,52 @@ require_once __DIR__ . '/config.php';
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     <style>
         .post-single {
-            background: white;
+            background: var(--bg-primary);
             padding: 40px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             margin: 30px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .post-thumbnail {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            display: block;
         }
 
         .post-single h1 {
             margin-bottom: 15px;
             font-size: 36px;
+            color: var(--text-primary);
         }
 
         .post-meta {
-            color: #666;
+            color: var(--text-secondary);
             margin-bottom: 30px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .post-meta strong {
+            color: var(--text-primary);
         }
 
         .post-content {
             font-size: 16px;
             line-height: 1.8;
             margin: 30px 0;
-            color: #333;
+            color: var(--text-primary);
         }
 
         .post-content img {
             max-width: 100%;
             height: auto;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             margin: 20px 0;
         }
 
@@ -49,19 +65,22 @@ require_once __DIR__ . '/config.php';
 
         .tag {
             display: inline-block;
-            background: #e8f4f8;
-            color: #0066cc;
+            background: var(--bg-secondary);
+            color: var(--primary);
             padding: 5px 12px;
             border-radius: 20px;
             margin-right: 8px;
             margin-bottom: 8px;
             font-size: 14px;
             cursor: pointer;
+            border: 1px solid var(--border);
+            transition: var(--transition);
         }
 
         .tag:hover {
-            background: #0066cc;
+            background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
         .vote-section {
@@ -69,56 +88,69 @@ require_once __DIR__ . '/config.php';
             gap: 15px;
             margin: 30px 0;
             padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
         }
 
         .vote-btn {
             flex: 1;
             padding: 10px 20px;
-            border: 1px solid #ddd;
-            background: white;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            font-weight: 600;
         }
 
         .vote-btn:hover {
-            border-color: #0066cc;
-            color: #0066cc;
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--bg-secondary);
         }
 
         .vote-btn.active {
-            background: #0066cc;
+            background: var(--primary);
             color: white;
-            border-color: #0066cc;
+            border-color: var(--primary);
         }
 
         .comments-section {
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border);
         }
 
         .comments-section h2 {
             margin-bottom: 20px;
+            color: var(--text-primary);
         }
 
         .comment-form {
-            background: #f9f9f9;
+            background: var(--bg-secondary);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             margin-bottom: 30px;
+            border: 1px solid var(--border);
         }
 
         .comment-form textarea {
             width: 100%;
             min-height: 100px;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
             font-family: inherit;
             margin-bottom: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            resize: vertical;
+        }
+
+        .comment-form textarea::placeholder {
+            color: var(--text-light);
         }
 
         .comments-list {
@@ -128,25 +160,26 @@ require_once __DIR__ . '/config.php';
         }
 
         .comment-item {
-            background: white;
+            background: var(--bg-secondary);
             padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 4px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
         }
 
         .comment-author {
             font-weight: bold;
             margin-bottom: 5px;
+            color: var(--text-primary);
         }
 
         .comment-date {
             font-size: 12px;
-            color: #999;
+            color: var(--text-light);
         }
 
         .comment-content {
             margin: 10px 0;
-            color: #333;
+            color: var(--text-secondary);
         }
 
         .reply-btn {
@@ -163,24 +196,53 @@ require_once __DIR__ . '/config.php';
         }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="<?php echo BASE_URL; ?>" class="logo">DevDA Blog</a>
-            <ul class="nav-menu">
-                <li><a href="<?php echo BASE_URL; ?>">Trang Chủ</a></li>
-                <li id="authLinks">
-                    <a href="<?php echo BASE_URL; ?>/login.php">Đăng Nhập</a>
-                    <a href="<?php echo BASE_URL; ?>/register.php">Đăng Ký</a>
-                </li>
-                <li id="userLinks" style="display:none;">
-                    <span id="username"></span>
-                    <a href="<?php echo BASE_URL; ?>?page=my-posts">Bài Của Tôi</a>
-                    <a href="#" id="logoutBtn">Đăng Xuất</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<body class="with-sidebar">
+    <aside class="sidebar">
+        <div class="logo">🚀 <span>DevDA</span></div>
+        <nav class="sidebar-nav">
+            <a href="<?php echo BASE_URL; ?>" class="sidebar-nav-item">
+                <span>🏠</span>
+                <span class="text">Trang Chủ</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>?page=posts" class="sidebar-nav-item">
+                <span>📚</span>
+                <span class="text">Bài Viết</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/search.php" class="sidebar-nav-item">
+                <span>🔍</span>
+                <span class="text">Tìm Kiếm</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/profile.php" class="sidebar-nav-item" id="profileLink" style="display:none;">
+                <span>👤</span>
+                <span class="text">Hồ Sơ</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/post-form.php" class="sidebar-nav-item" id="postLink" style="display:none;">
+                <span>✍️</span>
+                <span class="text">Đăng Bài</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/leaderboard.php" class="sidebar-nav-item">
+                <span>🏆</span>
+                <span class="text">Xếp Hạng</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/admin/" class="sidebar-nav-item" id="adminLink" style="display:none;">
+                <span>⚙️</span>
+                <span class="text">Admin</span>
+            </a>
+            <div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
+            <button id="darkModeBtn" class="sidebar-nav-item" onclick="toggleDarkMode()" style="background: none; border: none; cursor: pointer; width: 100%; text-align: left;">
+                <span>🌙</span>
+                <span class="text">Dark Mode</span>
+            </button>
+            <a href="#" id="loginLink" class="sidebar-nav-item" style="display:none;">
+                <span>🔐</span>
+                <span class="text">Đăng Nhập</span>
+            </a>
+            <a href="#" id="logoutBtn" class="sidebar-nav-item" style="color: var(--danger); display:none;">
+                <span>🚪</span>
+                <span class="text">Đăng Xuất</span>
+            </a>
+        </nav>
+    </aside>
 
     <main class="container">
         <div class="post-single">
@@ -222,6 +284,7 @@ require_once __DIR__ . '/config.php';
                 }
 
                 let html = `
+                    ${post.thumbnail ? `<img src="${post.thumbnail}" alt="${post.title}" class="post-thumbnail">` : ''}
                     <h1>${post.title}</h1>
                     <div class="post-meta">
                         <strong>Tác giả:</strong> ${author.username} | 
