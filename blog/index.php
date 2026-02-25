@@ -9,34 +9,57 @@ require_once __DIR__ . '/config.php';
     <title>DevDA Blog - Hệ Thống Học Tập</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="<?php echo BASE_URL; ?>" class="logo">DevDA Blog</a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="<?php echo BASE_URL; ?>">Trang Chủ</a></li>
-                <li><a href="<?php echo BASE_URL; ?>?page=posts">Bài Viết</a></li>
-                <li><a href="<?php echo BASE_URL; ?>?page=search">Tìm Kiếm</a></li>
-                <li style="margin-left: auto;">
-                    <button id="darkModeBtn" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
-                </li>
-                <li id="authLinks">
-                    <a href="<?php echo BASE_URL; ?>/login.php">Đăng Nhập</a>
-                    <a href="<?php echo BASE_URL; ?>/register.php">Đăng Ký</a>
-                </li>
-                <li id="userLinks" style="display:none;">
-                    <span id="username"></span>
-                    <a href="<?php echo BASE_URL; ?>/post-form.php" class="btn btn-sm btn-primary" style="margin-left: 10px;">📝 Đăng Bài</a>
-                    <a href="<?php echo BASE_URL; ?>?page=my-posts">Bài Của Tôi</a>
-                    <a href="<?php echo BASE_URL; ?>?page=profile">Hồ Sơ</a>
-                    <a href="#" id="logoutBtn">Đăng Xuất</a>
-                </li>
-                <li id="adminLinks" style="display:none;">
-                    <a href="<?php echo BASE_URL; ?>/admin/">Admin</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<body class="with-sidebar">
+    <aside class="sidebar">
+        <div class="logo">🚀 <span>DevDA</span></div>
+        <nav class="sidebar-nav">
+            <a href="<?php echo BASE_URL; ?>" class="sidebar-nav-item active">
+                <span>🏠</span>
+                <span class="text">Trang Chủ</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>?page=posts" class="sidebar-nav-item">
+                <span>📚</span>
+                <span class="text">Bài Viết</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>?page=search" class="sidebar-nav-item">
+                <span>🔍</span>
+                <span class="text">Tìm Kiếm</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/profile.php" class="sidebar-nav-item" id="profileLink" style="display:none;">
+                <span>👤</span>
+                <span class="text">Hồ Sơ</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/post-form.php" class="sidebar-nav-item" id="postLink" style="display:none;">
+                <span>✍️</span>
+                <span class="text">Đăng Bài</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/leaderboard.php" class="sidebar-nav-item">
+                <span>🏆</span>
+                <span class="text">Xếp Hạng</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/admin/" class="sidebar-nav-item" id="adminLink" style="display:none;">
+                <span>⚙️</span>
+                <span class="text">Admin</span>
+            </a>
+            <div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
+            <button id="darkModeBtn" class="sidebar-nav-item" onclick="toggleDarkMode()" style="background: none; border: none; cursor: pointer; width: 100%; text-align: left;">
+                <span>🌙</span>
+                <span class="text">Dark Mode</span>
+            </button>
+            <a href="#" id="loginLink" class="sidebar-nav-item">
+                <span>🔐</span>
+                <span class="text">Đăng Nhập</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/register.php" class="sidebar-nav-item">
+                <span>✨</span>
+                <span class="text">Đăng Ký</span>
+            </a>
+            <a href="#" id="logoutBtn" class="sidebar-nav-item" style="display:none; color: var(--danger);">
+                <span>🚪</span>
+                <span class="text">Đăng Xuất</span>
+            </a>
+        </nav>
+    </aside>
 
     <main class="container">
         <div id="content">
@@ -69,13 +92,16 @@ require_once __DIR__ . '/config.php';
             .then(res => res.json())
             .then(data => {
                 if (data.loggedIn) {
-                    document.getElementById('authLinks').style.display = 'none';
-                    document.getElementById('userLinks').style.display = 'block';
-                    document.getElementById('username').textContent = data.user.username;
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('profileLink').style.display = 'block';
+                    document.getElementById('postLink').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'block';
                     
                     if (data.user.role === 'admin') {
-                        document.getElementById('adminLinks').style.display = 'block';
+                        document.getElementById('adminLink').style.display = 'block';
                     }
+                } else {
+                    document.getElementById('loginLink').href = '<?php echo BASE_URL; ?>/login.php';
                 }
             });
 
@@ -84,17 +110,21 @@ require_once __DIR__ . '/config.php';
             .then(res => res.json())
             .then(data => {
                 let html = '';
-                data.posts.forEach(post => {
-                    html += `
-                        <article class="post-card">
-                            <h3><a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}">${post.title}</a></h3>
-                            <p class="meta">${post.category} | ${post.created_at}</p>
-                            <p>${post.content.substring(0, 150)}...</p>
-                            <a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}" class="read-more">Đọc Thêm →</a>
-                        </article>
-                    `;
-                });
-                document.getElementById('postsContainer').innerHTML = html || '<p>Chưa có bài viết nào</p>';
+                if (data.posts && data.posts.length > 0) {
+                    data.posts.slice(0, 6).forEach(post => {
+                        html += `
+                            <article class="card">
+                                <h3><a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}">${post.title}</a></h3>
+                                <p class="stat-label" style="margin-top: 8px;">${post.category} | ${post.created_at}</p>
+                                <p style="margin-top: 12px; color: var(--text-secondary);">${post.content.substring(0, 150)}...</p>
+                                <a href="<?php echo BASE_URL; ?>/post.php?id=${post.id}" style="color: var(--primary); text-decoration: none; margin-top: 12px; display: inline-block; font-weight: 600;">Đọc Thêm →</a>
+                            </article>
+                        `;
+                    });
+                } else {
+                    html = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">Chưa có bài viết nào</p>';
+                }
+                document.getElementById('postsContainer').innerHTML = html;
             });
 
         // Logout

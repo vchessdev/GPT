@@ -1,0 +1,45 @@
+📦 HƯỚNG DẪN DEPLOY CSS FILES MỚI
+═════════════════════════════════════════════
+
+1. TẢI FILES:
+   ✓ style.css (15KB)
+   ✓ admin.css (10KB)
+
+2. TRUY CẬP FILE MANAGER:
+   - Vào cPanel / File Manager
+   - Điều hướng đến: /public_html/blog/assets/css/
+   
+3. UPLOAD:
+   - Upload style.css vào /blog/assets/css/
+   - Upload admin.css vào /blog/assets/css/
+   - Ghi đè file cũ
+
+4. KIỂM TRA:
+   - F5 refresh browser
+   - Xóa cache nếu cần (Ctrl+Shift+Delete)
+   - Refresh lại devda.undo.it/blog
+
+5. NẾU KHÔNG THẤY THAY ĐỔI:
+   ✓ Kiểm tra đúng folder /blog/assets/css/ chưa
+   ✓ Xóa browser cache
+   ✓ Thử browser khác
+   ✓ Chờ vài phút (CDN cache)
+
+═════════════════════════════════════════════
+
+📋 FILES CẦN UPLOAD:
+
+📄 style.css - CSS chính (trang chủ, bài viết, form)
+📄 admin.css - CSS admin panel
+
+═════════════════════════════════════════════
+
+✨ KHI UPLOAD XONG, BẠN SẼ THẤY:
+   ✓ Navbar đẹp với underline hover
+   ✓ Buttons có gradient 
+   ✓ Cards có shadow animation
+   ✓ Spacing sạch sẽ
+   ✓ Dark mode toggle
+   ✓ Responsive design
+
+═════════════════════════════════════════════

@@ -17,25 +17,30 @@ if (!isLoggedIn() || !isAdmin()) {
 <body class="admin">
     <div class="admin-container">
         <aside class="sidebar">
-            <div class="logo">DevDA Admin</div>
+            <div class="logo">⚙️ Admin</div>
             <nav class="admin-menu">
                 <a href="<?php echo BASE_URL; ?>/admin/" class="menu-item active">Dashboard</a>
-                <a href="<?php echo BASE_URL; ?>/admin/users.php" class="menu-item">Quản Lý User</a>
-                <a href="<?php echo BASE_URL; ?>/admin/posts.php" class="menu-item">Quản Lý Bài Viết</a>
-                <a href="<?php echo BASE_URL; ?>/admin/comments.php" class="menu-item">Quản Lý Bình Luận</a>
-                <a href="<?php echo BASE_URL; ?>/admin/files.php" class="menu-item">Quản Lý File</a>
-                <a href="<?php echo BASE_URL; ?>/admin/votes.php" class="menu-item">Thống Kê Vote</a>
-                <a href="<?php echo BASE_URL; ?>/admin/logs.php" class="menu-item">Logs Hệ Thống</a>
+                <a href="<?php echo BASE_URL; ?>/admin/users.php" class="menu-item">👥 Quản Lý User</a>
+                <a href="<?php echo BASE_URL; ?>/admin/posts.php" class="menu-item">📝 Quản Lý Bài</a>
+                <a href="<?php echo BASE_URL; ?>/admin/comments.php" class="menu-item">💬 Bình Luận</a>
+                <a href="<?php echo BASE_URL; ?>/admin/files.php" class="menu-item">📁 File</a>
+                <a href="<?php echo BASE_URL; ?>/admin/votes.php" class="menu-item">👍 Vote</a>
+                <a href="<?php echo BASE_URL; ?>/admin/logs.php" class="menu-item">📋 Logs</a>
                 <hr>
-                <a href="<?php echo BASE_URL; ?>" class="menu-item">Quay Về Blog</a>
-                <a href="#" id="logoutAdminBtn" class="menu-item logout">Đăng Xuất</a>
+                <a href="<?php echo BASE_URL; ?>" class="menu-item">← Quay Về</a>
+                <a href="#" id="logoutAdminBtn" class="menu-item logout">🚪 Đăng Xuất</a>
             </nav>
         </aside>
 
         <main class="admin-content">
             <header class="admin-header">
-                <h1>Dashboard</h1>
-                <span id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Chào mừng, <span id="adminName"><?php echo htmlspecialchars($_SESSION['username']); ?></span></p>
+                </div>
+                <div>
+                    <a href="<?php echo BASE_URL; ?>/profile.php" class="btn btn-primary">👤 Hồ Sơ</a>
+                </div>
             </header>
 
             <div class="dashboard-grid">
@@ -104,12 +109,16 @@ if (!isLoggedIn() || !isAdmin()) {
 
                 const users = await usersRes.json();
                 const posts = await postsRes.json();
+                const comments = await commentsRes.json();
                 const files = await filesRes.json();
+                const votes = await votesRes.json();
                 const logs = await logsRes.json();
 
                 document.getElementById('userCount').textContent = users.users?.length || 0;
                 document.getElementById('postCount').textContent = posts.posts?.length || 0;
+                document.getElementById('commentCount').textContent = comments.comments?.length || 0;
                 document.getElementById('fileCount').textContent = files.files?.length || 0;
+                document.getElementById('voteCount').textContent = votes.votes?.length || 0;
 
                 // Tính tổng views
                 let totalViews = 0;

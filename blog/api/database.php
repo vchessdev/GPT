@@ -24,7 +24,7 @@ class Database {
      * Khởi tạo database nếu chưa có
      */
     private function initializeDatabase() {
-        $tables = ['users', 'posts', 'comments', 'votes', 'files', 'logs'];
+        $tables = ['users', 'posts', 'comments', 'votes', 'files', 'logs', 'profiles', 'achievements', 'followers'];
         
         foreach ($tables as $table) {
             $file = $this->dataDir . '/' . $table . '.json';
